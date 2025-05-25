@@ -14,24 +14,14 @@
   </style>
 </head>
 <body>
-
   <div class="form">
     <h2>أداة التحقق من ملف نشاطك التجاري</h2>
 
     <label>اسم النشاط:</label>
     <input type="text" id="businessName" value="شركة عالم النظافة للخدمات البيئية">
 
-    <label>الفئة:</label>
-    <input type="text" id="category" value="شركة تنظيف">
-
-    <label>العنوان:</label>
-    <textarea id="address">جدة، حي البشائر، شارع أبي فراس الحمداني</textarea>
-
     <label>الإحداثيات (latitude, longitude):</label>
     <input type="text" id="coordinates" value="21.7897761, 39.1821582">
-
-    <label>رقم الجوال:</label>
-    <input type="text" id="phone" value="+966559061065">
 
     <label>رابط الموقع:</label>
     <input type="text" id="website" value="https://m-clean.net">
@@ -55,7 +45,6 @@
       const lat = parseFloat(latLng[0]);
       const lng = parseFloat(latLng[1]);
 
-      // يتم تشغيل الفحص الكامل من config.js (الموجود به كل الخدمات)
       const token = getAccessTokenFromUrl();
       if (token) {
         checkSiteInSearchConsoleOAuth(token, SEARCH_CONSOLE_SITE, messages, passed, (msgs1, status1) => {
