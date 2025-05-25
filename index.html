@@ -2,15 +2,79 @@
 <html lang="ar">
 <head>
   <meta charset="UTF-8">
-  <title>GMB Profile Validator</title>
+  <title>أداة التحقق من نشاطك التجاري على Google</title>
   <script src="config.js"></script>
+  <style>
+    body { font-family: Tahoma, sans-serif; direction: rtl; padding: 20px; background: #f1f3f4; }
+    .form { background: white; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; box-shadow: 0 0 10px #ccc; }
+    label { font-weight: bold; margin-top: 10px; display: block; }
+    input, textarea, select { width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; }
+    button { padding: 12px 20px; background-color: #1a73e8; color: white; border: none; border-radius: 6px; cursor: pointer; }
+    .result { margin-top: 20px; padding: 15px; border-radius: 8px; background: #eef; }
+  </style>
 </head>
 <body>
-  <h1>أداة التحقق من نشاطك التجاري على Google</h1>
-  <div id="resultBox"></div>
-  <!-- باقي عناصر الإدخال مثل الاسم، العنوان... -->
+
+  <div class="form">
+    <h2>أداة التحقق من ملف نشاطك التجاري</h2>
+
+    <label>اسم النشاط:</label>
+    <input type="text" id="businessName" value="شركة عالم النظافة للخدمات البيئية">
+
+    <label>الفئة:</label>
+    <input type="text" id="category" value="شركة تنظيف">
+
+    <label>العنوان:</label>
+    <textarea id="address">جدة، حي البشائر، شارع أبي فراس الحمداني</textarea>
+
+    <label>الإحداثيات (latitude, longitude):</label>
+    <input type="text" id="coordinates" value="21.7897761, 39.1821582">
+
+    <label>رقم الجوال:</label>
+    <input type="text" id="phone" value="+966559061065">
+
+    <label>رابط الموقع:</label>
+    <input type="text" id="website" value="https://m-clean.net">
+
+    <label>البريد الإلكتروني:</label>
+    <input type="text" id="email" value="admin@m-clean.net">
+
+    <button onclick="validateProfile()">تحقق الآن</button>
+
+    <div id="resultBox" class="result"></div>
+  </div>
+
   <script>
-    // استدعاء الدالة validateProfile() هنا بعد إنشاء عناصر الإدخال
+    function validateProfile() {
+      window.messages = [];
+      window.passed = true;
+
+      window.name = document.getElementById("businessName").value;
+      const coordinates = document.getElementById("coordinates").value;
+      const latLng = coordinates.split(',');
+      const lat = parseFloat(latLng[0]);
+      const lng = parseFloat(latLng[1]);
+
+      // يتم تشغيل الفحص الكامل من config.js (الموجود به كل الخدمات)
+      const token = getAccessTokenFromUrl();
+      if (token) {
+        checkSiteInSearchConsoleOAuth(token, SEARCH_CONSOLE_SITE, messages, passed, (msgs1, status1) => {
+          verifyBusinessPlace(name, lat, lng, msgs1, status1, (msgs2, status2) => {
+            const resultBox = document.getElementById("resultBox");
+            resultBox.className = 'result ' + (status2 ? 'success' : 'error');
+            resultBox.innerHTML = `<ul>${msgs2.map(msg => `<li>${msg}</li>`).join('')}</ul>`;
+          });
+        });
+      } else {
+        messages.push("🔐 لم يتم تسجيل الدخول بعد. اضغط لتسجيل الدخول.");
+        const resultBox = document.getElementById("resultBox");
+        resultBox.innerHTML = "";
+        const btn = document.createElement("button");
+        btn.innerText = "تسجيل الدخول إلى Google";
+        btn.onclick = () => authenticateWithGoogle();
+        resultBox.appendChild(btn);
+      }
+    }
   </script>
 </body>
 </html>
