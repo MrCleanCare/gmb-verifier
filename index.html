@@ -15,6 +15,14 @@
 </head>
 <body>
 
+  <script>
+    // إصلاح التوجيه بعد تسجيل الدخول من OAuth إلى مجلد GitHub Pages الصحيح
+    if (window.location.pathname === "/" && window.location.hash.includes("access_token")) {
+      const newUrl = "https://mrcleancare.github.io/gmb-verifier/" + window.location.hash;
+      window.location.replace(newUrl);
+    }
+  </script>
+
   <div class="form">
     <h2>أداة التحقق من ملف نشاطك التجاري</h2>
 
@@ -55,7 +63,6 @@
       const lat = parseFloat(latLng[0]);
       const lng = parseFloat(latLng[1]);
 
-      // يتم تشغيل الفحص الكامل من config.js (الموجود به كل الخدمات)
       const token = getAccessTokenFromUrl();
       if (token) {
         checkSiteInSearchConsoleOAuth(token, SEARCH_CONSOLE_SITE, messages, passed, (msgs1, status1) => {
