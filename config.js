@@ -8,7 +8,7 @@ const PLACE_API_URL = 'https://places.googleapis.com/v1/places:searchText';
 function authenticateWithGoogle(callback) {
   const clientId = '591960142463-5r7ict52i6tt63jjg5e2ior9soe9r1j0.apps.googleusercontent.com';
   const scope = 'https://www.googleapis.com/auth/webmasters.readonly';
-  const redirectUri = window.location.origin;
+  const redirectUri = "https://MrCleanCare.github.io/gmb-verifier/";
   const authUrl =
     `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}` +
     `&redirect_uri=${redirectUri}` +
