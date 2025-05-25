@@ -16,7 +16,6 @@
 <body>
 
   <script>
-    // إصلاح التوجيه بعد تسجيل الدخول من OAuth إلى مجلد GitHub Pages الصحيح
     if (window.location.pathname === "/" && window.location.hash.includes("access_token")) {
       const newUrl = "https://mrcleancare.github.io/gmb-verifier/" + window.location.hash;
       window.location.replace(newUrl);
@@ -80,6 +79,12 @@
         btn.innerText = "تسجيل الدخول إلى Google";
         btn.onclick = () => authenticateWithGoogle();
         resultBox.appendChild(btn);
+      }
+    }
+
+    window.onload = function () {
+      if (window.location.hash.includes("access_token")) {
+        setTimeout(validateProfile, 500);
       }
     }
   </script>
